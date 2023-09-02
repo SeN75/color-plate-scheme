@@ -56,3 +56,11 @@ export class YourComponent {
 ```
 
 In the above example, we import the `ColorsSchemeService` from the 'colors-scheme' library and use it to create a color palette (`palette`) from the base color `#66CC99`. You can replace `#66CC99` with any base color of your choice.
+
+
+
+## Credits
+
+This project builds upon and includes code from the following sources:
+
+- `code.js` from the [color-scheme-figma-plugin](https://github.com/Hidetaro7/color-scheme-figma-plugin)

@@ -62,4 +62,4 @@ In the above example, we import the `ColorsSchemeService` from the 'colors-schem
 
 This project builds upon and includes code from the following sources:
 
-- `code.js` from the [Original Repository](https://github.com/Hidetaro7/color-scheme-figma-plugin)
+- `code.js` from the [color-scheme-figma-plugin](https://github.com/Hidetaro7/color-scheme-figma-plugin)
