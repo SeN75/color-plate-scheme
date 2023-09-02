@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { ColorsSchemeService } from 'colors-scheme';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'color-generator-scheme';
+
+  constructor(private colorsSrv: ColorsSchemeService) {
+
+   const platte =  this.colorsSrv.createSwatches('#66CC99');
+
+   console.log('color platte:: ', platte)
+  }
+
 }

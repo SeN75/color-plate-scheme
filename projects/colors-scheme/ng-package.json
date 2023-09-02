@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/colors-scheme",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "assets": ["./assets/styles/**/*.css"],
+  "allowedNonPeerDependencies": [
+    "@types/tinycolor2",
+    "tinycolor2"
+  ]
+}

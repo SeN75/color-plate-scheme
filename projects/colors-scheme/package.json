@@ -1,0 +1,31 @@
+{
+  "name": "colors-scheme",
+  "version": "0.0.3",
+  "author": {
+    "name": "saleh alsaggaf",
+    "email": "saleh-alsaggaf7575@outlook.com",
+    "url": "https://salehalsaggaf75.web.app/"
+  },
+  "description": "An Angular-compatible color generator package that creates a color palette with 10 variations from a single base color, ranging from lighter to darker shades. It is an adaptation of the 'color-scheme-figma-plugin' package, modified to seamlessly integrate with Angular projects.",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^15.2.0",
+    "@angular/core": "^15.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@types/tinycolor2": "^1.4.3",
+    "tinycolor2": "^1.6.0"
+
+  },
+  "keywords":[
+    "color-scheme-figma-plugin",
+    "angular-color-generator",
+    "angular-color-palette",
+    "angular-color-scheme",
+    "styling",
+    "contrast",
+    "angular-palette-generator"
+  ],
+  "sideEffects": false
+}
