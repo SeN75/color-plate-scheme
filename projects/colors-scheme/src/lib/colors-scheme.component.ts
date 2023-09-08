@@ -59,7 +59,7 @@ export class ColorsSchemeComponent {
   `],
   template: `
     <section>
-      <div class="default-color"  (click)="colorInput.click()" style="background-color:  {{scheme[4].color}};">
+      <div class="default-color"  (click)="colorInput.click()" style="background-color:  {{scheme[4].hex}}; t">
         <input hidden type="color" #colorInput [(ngModel)]="baseColor" (ngModelChange)="colorsPlate()">
       </div>
       <div class="colors-container">
@@ -70,10 +70,10 @@ export class ColorsSchemeComponent {
           </div>
           <nav class="color-variant">
             <div *ngFor="let s of scheme">
-              <div [style.background]="s.color">
-                {{s.label}}
+              <div [style.background]="s.hex" [style.color]="!s.darkContrast ? '#fff' : '#1e1e1e'">
+                {{s.name}}
               </div>
-              {{s.color}}
+              {{s.name}}
             </div>
           </nav>
       </div>
@@ -85,17 +85,12 @@ export class ColorsSchemeComponent {
 })
 export class ColorPlate implements OnInit  {
   baseColor = '#ff0000';
-  scheme: {
-    label: string,
-    color: string,
-    rgbColor: any
-  } []  =[]
+  scheme: any []  =[]
   constructor(private colorSrv: ColorsSchemeService) {}
   ngOnInit(): void {
     this.colorsPlate()
   }
   colorsPlate() {
    this.scheme =  this.colorSrv.createSwatches(this.baseColor)
-
   }
 }

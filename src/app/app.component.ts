@@ -6,12 +6,20 @@ import { ColorsSchemeService } from 'colors-scheme';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-
   constructor(private colorsSrv: ColorsSchemeService) {
-
-   const platte =  this.colorsSrv.createSwatches('#66CC99');
-
-   console.log('color platte:: ', platte)
+    this.colorsSrv.setTheme(
+      { primary: '#248978', secondary: '#9900ff', warn: 'ff6600' },
+      'theme-'
+    );
   }
 
+  setLight() {
+    this.colorsSrv.setLight();
+  }
+  setDark() {
+    this.colorsSrv.setDark();
+  }
+  setDefault() {
+    this.colorsSrv.clearTheme();
+  }
 }

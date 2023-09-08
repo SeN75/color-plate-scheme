@@ -1,6 +1,6 @@
 {
   "name": "colors-scheme",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "author": {
     "name": "saleh alsaggaf",
     "email": "saleh-alsaggaf7575@outlook.com",
@@ -22,11 +22,15 @@
     "angular-color-scheme",
     "styling",
     "contrast",
-    "angular-palette-generator"
+    "angular-palette-generator",
+    "angular-material",
+    "angualr-material-custom-theme",
+    "angualr-tailwind-custom-theme"
   ],
   "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/SeN75/color-plate-scheme"
-  }
+  },
+  "private": false
 }

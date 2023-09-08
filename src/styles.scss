@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  color-scheme: dark light;
+  --theme-primary-50: #F0EBF5;
+  --theme-primary-100: #E0D5E9;
+  --theme-primary-200: #C1ABD3;
+  --theme-primary-300: #A182BD;
+  --theme-primary-400: #8258A7;
+  --theme-primary-500: #632E91;
+  --theme-primary-600: #4A236D;
+  --theme-primary-700: #321749;
+  --theme-primary-800: #190C24;
+  --theme-primary-900: #0A050F;
+  --theme-primary-A100: #F0EBF5;
+  --theme-primary-A200: #632E91;
+  --theme-primary-A400: #4A236D;
+  --theme-primary-A700: #190C24;
+  --theme-primary-contrast-50: #000;
+  --theme-primary-contrast-100: #000;
+  --theme-primary-contrast-200: #000;
+  --theme-primary-contrast-300: #000;
+  --theme-primary-contrast-400: #000;
+  --theme-primary-contrast-500: #fff;
+  --theme-primary-contrast-600: #fff;
+  --theme-primary-contrast-700: #fff;
+  --theme-primary-contrast-800: #fff;
+  --theme-primary-contrast-900: #fff;
+  --theme-primary-contrast-A100: #000;
+  --theme-primary-contrast-A200: #fff;
+  --theme-primary-contrast-A400: #fff;
+  --theme-primary-contrast-A700: #fff;
+}
