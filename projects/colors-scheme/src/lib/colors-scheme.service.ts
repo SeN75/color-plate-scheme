@@ -1,32 +1,35 @@
 import {
   ElementRef,
   Injectable,
+  OnInit,
   Renderer2,
   RendererFactory2,
 } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ColorsSchemeService {
+export class ColorsSchemeService implements OnInit{
   private lightRGB = new Array(255, 255, 255);
   private darkRGB = new Array(0, 0, 0);
-  private head!: ElementRef;
+  private head!: any;
 
   private renderer: Renderer2;
 
-  constructor(rendererFactory: RendererFactory2) {
+  constructor(rendererFactory: RendererFactory2)  {
     // Initialize the renderer with a null host and null engine (default values)
     this.renderer = rendererFactory.createRenderer(null, null);
-    // Select the 'head' element in the DOM
-    this.head = this.renderer.selectRootElement('head');
-    // Check the local storage for the 'darkMode' setting
-    const darkMode = localStorage['darkMode'];
-    // Apply the appropriate theme based on the 'darkMode' setting in local storage
-    if (darkMode === 'dark') this.setDark(); // Apply the dark mode theme
-    else if (darkMode === 'light')
-      this.setLight(); // Apply the light mode theme
-    else this.setDefault(); // Apply the default theme if 'darkMode' is not set
+
   }
+  ngOnInit(): void {
+ // Select the 'head' element in the DOM
+ // Check the local storage for the 'darkMode' setting
+ const darkMode = localStorage['darkMode'];
+ // Apply the appropriate theme based on the 'darkMode' setting in local storage
+//  if (darkMode === 'dark') this.setDark(); // Apply the dark mode theme
+//  else if (darkMode === 'light')
+//    this.setLight(); // Apply the light mode theme
+//  else this.setDefault(); // Apply the default theme if 'darkMode' is not set
+}
   /**
    * Create an array of color swatches based on the input color.
    *
@@ -36,8 +39,8 @@ export class ColorsSchemeService {
   createSwatches(colorCode: string) {
     let nHex = colorCode.replace('#', '');
     let baseColor = this.longHexToDec(nHex);
-    const colorValues = [];
-    const collection: Color[] = [];
+    const collectionLight: Color[] = [];
+    const collectionDark: Color[] = [];
     const opArray = new Array(
       0.1,
       0.2,
@@ -63,26 +66,41 @@ export class ColorsSchemeService {
       '900',
     ];
     for (let i = 0; i < 10; i++) {
-      let nMask = i <= 5 ? this.lightRGB : this.darkRGB;
-      let nColor = this.setColorHue(baseColor, opArray[i], nMask);
-      nHex =
-        this.toHex(nColor[0]) + this.toHex(nColor[1]) + this.toHex(nColor[2]);
-      colorValues[i] = new Array();
-      colorValues[i][0] = nHex;
-      colorValues[i][1] = nColor;
-      const rgbColor = this.hexToRgb(nHex);
-      let { r, b, g } = rgbColor;
-      let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-      collection[i] = {
-        name: labelArray[i],
-        hex: '#' + nHex,
-        rgb: rgbColor,
-        darkContrast: luma > 155,
-      };
-    }
-    return collection;
-  }
+      let nMaskLight = i <= 5 ? this.lightRGB : this.darkRGB;
+      let nMaskDark = i <= 5 ? this.darkRGB : this.lightRGB;
+      let nColorLight = this.setColorHue(baseColor, opArray[i], nMaskLight);
+      let nColorDark = this.setColorHue(baseColor, opArray[i], nMaskDark);
 
+      let nHexLight =  this.toHex(nColorLight[0]) + this.toHex(nColorLight[1]) + this.toHex(nColorLight[2]);
+      let nHexDark =  this.toHex(nColorDark[0]) + this.toHex(nColorDark[1]) + this.toHex(nColorDark[2]);
+
+
+
+      const rgbColorlight = this.hexToRgb(nHexLight);
+      const rgbColorDark = this.hexToRgb(nHexDark);
+
+      collectionLight[i] = {
+        name: labelArray[i],
+        hex: '#' + nHexLight,
+        rgb: rgbColorlight,
+        darkContrast: this.calculateContrast(nHexLight) > 155,
+      };
+      collectionDark[i] = {
+        name: labelArray[i],
+        hex: '#' + nHexDark,
+        rgb: rgbColorDark,
+        darkContrast: this.calculateContrast(nHexDark) > 155,
+      };
+
+    }
+
+    return {light: collectionLight, dark: collectionDark};
+  }
+ private calculateContrast(color: string) {
+  let { r, b, g } = this.hexToRgb(color);
+  let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luma
+ }
   private setColorHue(
     originColor: number[],
     opacityPercent: number,
@@ -133,30 +151,56 @@ export class ColorsSchemeService {
    */
   generatePlate(color: string) {
     const plate = this.createSwatches(color);
-    if (plate.length == 10) {
-      plate.push({
+    if (plate.light.length == 10) {
+      plate.light.push({
         name: 'A100',
-        hex: plate[0].hex,
-        darkContrast: plate[0].darkContrast,
-        rgb: plate[0].rgb,
+        hex: plate.light[0].hex,
+        darkContrast: plate.light[0].darkContrast,
+        rgb: plate.light[0].rgb,
       });
-      plate.push({
+      plate.light.push({
         name: 'A200',
-        hex: plate[2].hex,
-        darkContrast: plate[2].darkContrast,
-        rgb: plate[2].rgb,
+        hex: plate.light[2].hex,
+        darkContrast: plate.light[2].darkContrast,
+        rgb: plate.light[2].rgb,
       });
-      plate.push({
+      plate.light.push({
         name: 'A400',
-        hex: plate[5].hex,
-        rgb: plate[5].rgb,
-        darkContrast: plate[5].darkContrast,
+        hex: plate.light[5].hex,
+        rgb: plate.light[5].rgb,
+        darkContrast: plate.light[5].darkContrast,
       });
-      plate.push({
+      plate.light.push({
         name: 'A700',
-        hex: plate[7].hex,
-        rgb: plate[7].rgb,
-        darkContrast: plate[7].darkContrast,
+        hex: plate.light[7].hex,
+        rgb: plate.light[7].rgb,
+        darkContrast: plate.light[7].darkContrast,
+      });
+    }
+    if (plate.dark.length == 10) {
+      plate.dark.push({
+        name: 'A100',
+        hex: plate.dark[0].hex,
+        darkContrast: plate.dark[0].darkContrast,
+        rgb: plate.dark[0].rgb,
+      });
+      plate.dark.push({
+        name: 'A200',
+        hex: plate.dark[2].hex,
+        darkContrast: plate.dark[2].darkContrast,
+        rgb: plate.dark[2].rgb,
+      });
+      plate.dark.push({
+        name: 'A400',
+        hex: plate.dark[5].hex,
+        rgb: plate.dark[5].rgb,
+        darkContrast: plate.dark[5].darkContrast,
+      });
+      plate.dark.push({
+        name: 'A700',
+        hex: plate.dark[7].hex,
+        rgb: plate.dark[7].rgb,
+        darkContrast: plate.dark[7].darkContrast,
       });
     }
     return plate;
@@ -173,26 +217,55 @@ export class ColorsSchemeService {
    * @param theme The theme variant name (e.g., 'primary', 'accent', 'warn') to update.
    * @param prefix Optional prefix to add to the CSS variable names (useful for theming multiple components).
    */
-  updateTheme(colors: Color[], theme: string, prefix = '') {
-    let style = document.querySelector('style[id="color-theme"]');
-    if (!style) {
-      style = this.renderer.createElement('style');
-      style?.setAttribute('id', 'color-theme');
+  updateTheme(colors: {light: Color[], dark: Color[]}, theme: string, prefix = '') {
+    this.head = document.querySelector('head');
+    let styleLight = document.querySelector('style[id="color-theme-light"]');
+    let styleDark = document.querySelector('style[id="color-theme-dark"]');
+    if (!styleLight) {
+      styleLight = this.renderer.createElement('style');
+      styleLight?.setAttribute('id', 'color-theme-light');
+      // console.log('style ==> ', styleLight)
     }
-    let styleString = '';
-    colors.forEach((color) => {
-      styleString += `--${prefix}${theme}-${color.name}: ${
+    if (!styleDark) {
+      styleDark = this.renderer.createElement('style');
+      styleDark?.setAttribute('id', 'color-theme-dark');
+      // console.log('style ==> ', styleLight)
+    }
+
+    let styleStringLight = '';
+    let styleStringDark = '';
+    colors.light.forEach((color) => {
+      styleStringLight += `--${prefix}${theme}-${color.name}: ${
         color.hex
       }; --${prefix}${theme}-contrast-${color.name}: ${
-        color.darkContrast ? 'rgba(black, 0.87)' : '#ffffff'
+        color.darkContrast ? 'rgba(0,0,0, 0.87)' : '#ffffff'
       };`;
     });
-    if (style!.innerHTML == '') style!.innerHTML = `:root {${styleString}}`;
+
+    colors.dark.forEach(color => {
+      styleStringDark += `--${prefix}${theme}-${color.name}: ${
+        color.hex
+      }; --${prefix}${theme}-contrast-${color.name}: ${
+        color.darkContrast ? 'rgba(0,0,0, 0.87)' : '#ffffff'
+      };`;
+    })
+
+    if (styleLight!.innerHTML == '') styleLight!.innerHTML = `:root {${styleStringLight}}`;
     else {
-      const styleContent = style?.innerHTML.replace('}', styleString + '}');
-      style!.innerHTML = styleContent!;
+      const styleContent = styleLight?.innerHTML.replace('}', styleStringLight + '}');
+      styleLight!.innerHTML = styleContent!;
     }
-    this.renderer.appendChild(this.head, style);
+    if(styleDark!.innerHTML == '') styleDark!.innerHTML = `
+    html.dark  {
+        ${styleStringDark}
+    }
+    `
+    else {
+      const styleContent = styleDark?.innerHTML.replace(/\}/g, styleStringDark + '}');
+      styleDark!.innerHTML = styleContent!;
+    }
+    this.renderer.appendChild(this.head, styleLight);
+    this.renderer.appendChild(this.head, styleDark);
   }
 
   /**
@@ -231,9 +304,10 @@ export class ColorsSchemeService {
   /**
    * Sets the application to use the light mode theme.
    */
-  setLight() {
+   setLight() {
     // Check if the 'color-scheme' meta tag exists in the DOM
     let colorMeta = document.querySelector('meta[name="color-scheme"]');
+    this.head = document.querySelector('head');
 
     // If the 'color-scheme' meta tag doesn't exist, create it
     if (!colorMeta) {
@@ -248,14 +322,17 @@ export class ColorsSchemeService {
 
     // Update the 'darkMode' setting in local storage to 'light'
     localStorage['darkMode'] = 'light';
+    document.querySelector('html')?.classList.remove('dark')
   }
 
   /**
    * Sets the application to use the dark mode theme.
    */
-  setDark() {
+   setDark() {
     // Check if the 'color-scheme' meta tag exists in the DOM
     let colorMeta = document.querySelector('meta[name="color-scheme"]');
+    this.head = document.querySelector('head');
+
     // If the 'color-scheme' meta tag doesn't exist, create it
     if (!colorMeta) {
       colorMeta = this.renderer.createElement('meta');
@@ -267,6 +344,8 @@ export class ColorsSchemeService {
     colorMeta!.setAttribute('content', 'dark');
     // Update the 'darkMode' setting in local storage to 'dark'
     localStorage['darkMode'] = 'dark';
+    document.querySelector('html')?.classList.add('dark')
+
   }
   /**
    * Sets the default theme for the application when 'darkMode' is not specified or is invalid.
@@ -274,6 +353,8 @@ export class ColorsSchemeService {
   private setDefault() {
     // Check if the 'color-scheme' meta tag exists in the DOM
     let colorMeta = document.querySelector('meta[name="color-scheme"]');
+    this.head = document.querySelector('head')!;
+
     // If the 'color-scheme' meta tag doesn't exist, create it
     if (!colorMeta) {
       colorMeta = this.renderer.createElement('meta');

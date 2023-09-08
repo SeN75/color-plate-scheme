@@ -1,17 +1,19 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ColorsSchemeService } from 'colors-scheme';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   constructor(private colorsSrv: ColorsSchemeService) {
-    this.colorsSrv.setTheme(
-      { primary: '#248978', secondary: '#9900ff', warn: 'ff6600' },
-      'theme-'
-    );
+
   }
+  ngOnInit(): void {
+    this.colorsSrv.setTheme(
+      { primary: '#248978', secondary: '#ff00ee', error: 'ff0000' },
+      'theme-'
+    );  }
 
   setLight() {
     this.colorsSrv.setLight();
@@ -22,4 +24,11 @@ export class AppComponent {
   setDefault() {
     this.colorsSrv.clearTheme();
   }
+  dd() {
+    this.colorsSrv.setTheme(
+      { primary: '#24dd78', secondary: '#f70eee', error: 'ff00dd' },
+      'theme-'
+    );
+    }
+
 }

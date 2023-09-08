@@ -91,6 +91,9 @@ export class ColorPlate implements OnInit  {
     this.colorsPlate()
   }
   colorsPlate() {
-   this.scheme =  this.colorSrv.createSwatches(this.baseColor)
+    const test = this.colorSrv.createSwatches(this.baseColor)
+   this.scheme =  this.colorSrv.createSwatches(this.baseColor).dark;
+
+   console.log('test ==> ', test)
   }
 }
